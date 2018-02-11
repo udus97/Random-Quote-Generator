@@ -1,5 +1,3 @@
-
-
 $(function () {
 
   var url = 'https://twitter.com/intent/tweet?text=';
@@ -24,8 +22,6 @@ $(function () {
   $tweetButton.click(function () {
     window.open(url + e(tweet));
   })
-
-
 
 
   function getQuote() {
