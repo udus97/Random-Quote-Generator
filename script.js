@@ -11,6 +11,7 @@ $(function () {
   $warningContainer = $('div');
 
   $getQuoteButton.click(function () {
+    $(this).attr('disabled', true)
     getQuote();
   });
 
@@ -31,6 +32,7 @@ $(function () {
       dataType: 'jsonp',
       data: { method: 'getQuote', format: 'jsonp', lang: 'en', },
       success: function (data) {
+        $getQuoteButton.attr('disabled', false)
         $quoteString.html(data.quoteText);
         tweet = (data.quoteText + '\n-' + data.quoteAuthor).trim();
 
