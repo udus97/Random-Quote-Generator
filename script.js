@@ -1,55 +1,52 @@
-let url = 'https://twitter.com/intent/tweet?text=', endpoint = 'http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en';
 
 
-let getQuoteButton, tweetButton, quoteString, quoteAuthor, warningContainer, tweet, a; c = console.clear, l = console.log, e = encodeURI;
+$(function () {
+
+  var url = 'https://twitter.com/intent/tweet?text=';
+
+  var $getQuoteButton, $tweetButton, $quoteString, $quoteAuthor, $warningContainer, tweet;
+  var c = console.clear, l = console.log, e = encodeURI;
+  $getQuoteButton = $('button').eq(0);
+  $tweetButton = $('button').eq(1);
+  $quoteString = $('p').eq(0);
+  $quoteAuthor = $('p').eq(1);
+  $warningContainer = $('div');
+
+  $getQuoteButton.click(function () {
+    getQuote();
+  });
+
+  $('a').click(function (e) {
+    $getQuoteButton.trigger('click');
+    e.preventDefault();
+  })
+
+  $tweetButton.click(function () {
+    window.open(url + e(tweet));
+  })
 
 
-getQuoteButton = document.querySelectorAll('button')[0];
-tweetButton = document.querySelectorAll('button')[1];
-quoteString = document.querySelectorAll('p')[0];
-quoteAuthor = document.querySelectorAll('p')[1];
-warningContainer = document.querySelector('div');
-a = document.querySelector('a');
-
-getQuoteButton.addEventListener('click', () => {
-  getQuote();
-});
-
-a.addEventListener('click', (e) => {
-  getQuote();
-  e.preventDefault();
-});
-
-tweetButton.addEventListener('click', () => {
-  window.open(url + e(tweet));
-});
 
 
-function getQuote() {
-  fetch(endpoint)
-    .then((resp) => resp.json())
-    .then(function (data) {
-      quoteString.innerHTML = data.quoteText;
+  function getQuote() {
+    $.get('http://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en', function (data) {
+      $quoteString.html(data.quoteText);
       tweet = (data.quoteText + '\n-' + data.quoteAuthor).trim();
 
       if (data.quoteAuthor.trim().length > 0) {
-        quoteAuthor.innerHTML = '-' + data.quoteAuthor;
+        $quoteAuthor.html('-' + data.quoteAuthor);
       } else {
-        quoteAuthor.innerHTML = '-Anonymous';
+        $quoteAuthor.html('-Anonymous');
       }
 
-      getQuoteButton.innerHTML = 'Get another quote';
+      $getQuoteButton.text('Get another quote');
       if (tweet.length <= 280) {
-        tweetButton.disabled = false;
-        warningContainer.classList.add('hide');
+        $tweetButton.prop('disabled', false);
+        $warningContainer.addClass('hide');
       } else {
-        tweetButton.disabled = true;
-        warningContainer.classList.remove('hide');
-        warningContainer.classList.add('warning');
+        $tweetButton.prop('disabled', true);
+        $warningContainer.removeClass('hide').addClass('warning');
       }
-
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
-}
+    });
+  }
+})
