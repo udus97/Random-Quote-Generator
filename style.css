@@ -1,0 +1,13 @@
+.warning{
+  color:greenyellow
+}
+.hide{
+  display:none
+}
+/* .show{
+  display:block;
+} */
+a{
+  text-decoration:none;
+
+}
