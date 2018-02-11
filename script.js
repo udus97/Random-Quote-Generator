@@ -25,23 +25,29 @@ $(function () {
 
 
   function getQuote() {
-    $.get('http://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en', function (data) {
-      $quoteString.html(data.quoteText);
-      tweet = (data.quoteText + '\n-' + data.quoteAuthor).trim();
+    $.ajax({
+      url: 'https://api.forismatic.com/api/1.0/',
+      jsonp: 'jsonp',
+      dataType: 'jsonp',
+      data: { method: 'getQuote', format: 'jsonp', lang: 'en', },
+      success: function (data) {
+        $quoteString.html(data.quoteText);
+        tweet = (data.quoteText + '\n-' + data.quoteAuthor).trim();
 
-      if (data.quoteAuthor.trim().length > 0) {
-        $quoteAuthor.html('-' + data.quoteAuthor);
-      } else {
-        $quoteAuthor.html('-Anonymous');
-      }
+        if (data.quoteAuthor.trim().length > 0) {
+          $quoteAuthor.html('-' + data.quoteAuthor);
+        } else {
+          $quoteAuthor.html('-Anonymous');
+        }
 
-      $getQuoteButton.text('Get another quote');
-      if (tweet.length <= 280) {
-        $tweetButton.prop('disabled', false);
-        $warningContainer.addClass('hide');
-      } else {
-        $tweetButton.prop('disabled', true);
-        $warningContainer.removeClass('hide').addClass('warning');
+        $getQuoteButton.text('Get another quote');
+        if (tweet.length <= 280) {
+          $tweetButton.prop('disabled', false);
+          $warningContainer.addClass('hide');
+        } else {
+          $tweetButton.prop('disabled', true);
+          $warningContainer.removeClass('hide').addClass('warning');
+        }
       }
     });
   }
