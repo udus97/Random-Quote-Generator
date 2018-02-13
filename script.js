@@ -53,7 +53,7 @@ $(function () {
         // If the quote has an author insert the name of the author in the $quoteAuthor paragraph tag
         // Otherwise, insert the word '-Anonymous' in the paragraph tag
         if (data.quoteAuthor.trim().length > 0) {
-          $quoteAuthor.html('-' + data.quoteAuthor);
+          $quoteAuthor.html('&mdash;' + data.quoteAuthor);
         } else {
           $quoteAuthor.html('-Anonymous');
         }
